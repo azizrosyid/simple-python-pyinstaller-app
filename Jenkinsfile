@@ -23,13 +23,13 @@ node {
     // }
     stage('Deploy') {
         checkout scm
-        withDockerContainer(image: 'python:3-alpine', args: '-p 3000:3000') {
-            withEnv(["VOLUME=\$(pwd)/sources:/src", "IMAGE=cdrx/pyinstaller-linux:python2"]) {
-                dir(env.BUILD_ID) {
-                    unstash(name: 'compiled-results')
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-                    archiveArtifacts "sources/dist/add2vals"
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
+        withEnv(["VOLUME=\$(pwd)/sources:/src", "IMAGE=cdrx/pyinstaller-linux:python2"]) {
+            dir(env.BUILD_ID) {
+                unstash(name: 'compiled-results')
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                archiveArtifacts "sources/dist/add2vals"
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
+                withDockerContainer(image: 'python:3-alpine', args: '-p 3000:3000') {
                     sh 'python sources/serve.py'
                 }
             }
