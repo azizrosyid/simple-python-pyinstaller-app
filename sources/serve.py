@@ -1,6 +1,10 @@
 import http.server
 import socketserver
-PORT = 3000
+import sys
+
+serverPort = int(sys.argv[1])
+
+PORT = serverPort or 3000
 DIR = "./sources/dist"
 
 
