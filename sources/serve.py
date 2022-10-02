@@ -1,6 +1,6 @@
 import http.server
 import socketserver
-PORT = 8000
+PORT = 3000
 DIR = "."
 
 
