@@ -27,11 +27,11 @@ node {
             dir(env.BUILD_ID) {
                 unstash(name: 'compiled-results')
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-                archiveArtifacts "sources/dist/add2vals"
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 withDockerContainer(image: 'python:3-alpine', args: '-p 3000:3000') {
                     sh 'python sources/serve.py'
                 }
+                archiveArtifacts "sources/dist/add2vals"
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
             }
         }
         // sleep 60
