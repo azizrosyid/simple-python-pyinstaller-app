@@ -35,7 +35,15 @@ node {
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
             }
         }
-        // sleep 60
+        // deploy to heroku
+        withCredentials([usernamePassword(credentialsId: 'heroku', usernameVariable: 'HEROKU_USER', passwordVariable: 'HEROKU_API_KEY')]) {
+            withEnv(["APP_NAME=jenkins-pyinstaller", "IMAGE=registry.heroku.com/${APP_NAME}/web"]) {
+                sh "docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com"
+                sh "docker build -t ${IMAGE} sources/dist/add2vals"
+                sh "docker push ${IMAGE}"
+                sh "heroku container:release web --app ${APP_NAME}"
+            }
+        }
 
     }
 }
