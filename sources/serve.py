@@ -1,10 +1,8 @@
 import http.server
 import socketserver
+PORT = 8000
+DIR = "."
 
-PORT = 3000
-DIR = "sources/dist"
-
-print("Serving at port", PORT)
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
