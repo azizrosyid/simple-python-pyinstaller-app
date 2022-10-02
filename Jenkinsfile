@@ -22,11 +22,14 @@ node {
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
                 archiveArtifacts "sources/dist/add2vals"
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-                sleep 60
             }
         }
     }
     stage('Manual Approval') {
-        input message: 'Do you want to deploy?', ok: 'Yes'
+        input message: 'Lanjutkan ke tahap Deploy?', ok: 'Yes, deploy'
+    }
+    stage('Deploy') {
+        checkout scm
+        sleep 60
     }
 }
