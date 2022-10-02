@@ -14,27 +14,24 @@ node {
             
         }
     }
-    stage('Deliver') {
-        checkout scm
-        withEnv(["VOLUME=\$(pwd)/sources:/src", "IMAGE=cdrx/pyinstaller-linux:python2"]) {
-            dir(env.BUILD_ID) {
-                unstash(name: 'compiled-results')
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-                archiveArtifacts "sources/dist/add2vals"
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-            }
-        }
-    }
-    stage('Manual Approval') {
-        input message: 'Lanjutkan ke tahap Deploy?', ok: 'Yes, deploy'
-    }
+    // stage('Deliver') {
+    //     checkout scm
+
+    // }
+    // stage('Manual Approval') {
+    //     input message: 'Lanjutkan ke tahap Deploy?', ok: 'Yes, deploy'
+    // }
     stage('Deploy') {
         checkout scm
         withDockerContainer(image: 'python:3-alpine', args: '-p 3000:3000') {
-            dir(env.BUILD_ID) {
-                unstash(name: 'compiled-results')
-                archiveArtifacts "sources/dist/add2vals"
-                sh 'python sources/serve.py'
+            withEnv(["VOLUME=\$(pwd)/sources:/src", "IMAGE=cdrx/pyinstaller-linux:python2"]) {
+                dir(env.BUILD_ID) {
+                    unstash(name: 'compiled-results')
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                    archiveArtifacts "sources/dist/add2vals"
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
+                    sh 'python sources/serve.py'
+                }
             }
         }
         // sleep 60
