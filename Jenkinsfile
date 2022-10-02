@@ -33,7 +33,6 @@ node {
         withDockerContainer(image: 'python:2-alpine') {
             dir(env.BUILD_ID) {
                 unstash(name: 'compiled-results')
-                echo ls
             }
         }
         // sleep 60
