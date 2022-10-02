@@ -4,10 +4,7 @@ import socketserver
 PORT = 3000
 DIR = "sources/dist"
 
-# list all files
-import os
-files = os.listdir(DIR)
-print("Files in directory: " + str(files))
+print("Serving at port", PORT)
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
