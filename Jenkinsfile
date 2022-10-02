@@ -33,8 +33,7 @@ node {
         withDockerContainer(image: 'python:2-alpine') {
             dir(env.BUILD_ID) {
                 unstash(name: 'compiled-results')
-                archiveArtifacts "sources/serve/add2vals"
-                sh 'python sources/serve/add2vals'
+                echo ls
             }
         }
         // sleep 60
