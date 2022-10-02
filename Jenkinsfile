@@ -25,4 +25,7 @@ node {
             }
         }
     }
+    stage('Manual Approval') {
+        input message: 'Do you want to deploy?', ok: 'Yes'
+    }
 }
