@@ -30,9 +30,10 @@ node {
     }
     stage('Deploy') {
         checkout scm
-        withDockerContainer(image: 'python:2-alpine', args: '-p 8080:8080') {
+        withDockerContainer(image: 'python:3-alpine', args: '-p 8080:8080') {
             dir(env.BUILD_ID) {
                 unstash(name: 'compiled-results')
+                sh 'pip install '
                 sh 'python sources/serve.py'
             }
         }
