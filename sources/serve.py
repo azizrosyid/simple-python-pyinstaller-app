@@ -2,7 +2,7 @@ import http.server
 import socketserver
 
 PORT = 3000
-DIR = "."
+DIR = "./sources/dist"
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
