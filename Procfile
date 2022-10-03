@@ -1,1 +1,0 @@
-web: python ./sources/serve.py
