@@ -1,13 +1,8 @@
-import http.server
-import socketserver
+from flask import Flask
 
-PORT = 3000
-DIR = "./sources/dist"
+app = Flask(__name__)
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=DIR, **kwargs)
+@app.route('/')
+def calculate():
+    return 'calculate'
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print("Server started at localhost:" + str(PORT))
-    httpd.serve_forever()

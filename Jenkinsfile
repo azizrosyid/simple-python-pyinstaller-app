@@ -32,9 +32,12 @@ node {
                     sh 'python sources/serve.py -l & sleep 60'
                 }
                 archiveArtifacts "sources/dist/add2vals"
+                sh "curl https://cli-assets.heroku.com/install.sh | sh"
+
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
             }
         }
+        w
         // withCredentials([usernamePassword(credentialsId: 'heroku', usernameVariable: 'HEROKU_USER', passwordVariable: 'HEROKU_API_KEY')]) {
         //     withEnv(["APP_NAME=jenkins-pyinstaller", "IMAGE=registry.heroku.com/${APP_NAME}/web"]) {
         //         sh "docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com"
@@ -43,6 +46,6 @@ node {
         //         sh "heroku container:release web --app ${APP_NAME}"
         //     }
         // }
-
+        
     }
 }
