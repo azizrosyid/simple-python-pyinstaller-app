@@ -5,4 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def calculate():
-    return subprocess.check_output(['python', 'sources/calculate.py', 100, 200])
+    cmd = 'python sources/add2vals.py 200 200'
+    result = subprocess.check_output(cmd, shell=True)
+    return result
+
