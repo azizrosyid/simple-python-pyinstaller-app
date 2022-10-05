@@ -25,7 +25,7 @@ node {
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
                 withDockerContainer(image: 'python:3-alpine', args: '-p 5000:5000') {
                     echo "Access the app at http://localhost:5000"
-                    sh 'pip install --user -r requirements.txt'
+                    sh 'pip install --user flask'
                     sh 'python sources/wsgi.py -l & sleep 60'
                 }
                 archiveArtifacts "sources/dist/add2vals"
