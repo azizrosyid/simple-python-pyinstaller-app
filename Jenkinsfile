@@ -26,6 +26,7 @@ node {
                 withDockerContainer(image: 'python:3-alpine', args: '-p 3000:3000') {
                     echo "Access the app at http://localhost:3000"
                     sh 'python sources/download.py -l & sleep 60'
+                    
                 }
                 archiveArtifacts "sources/dist/add2vals"
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"                
